@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.curso.worldwonders.R;
 import com.curso.worldwonders.entity.User;
 import com.curso.worldwonders.infrastructure.Constants;
+import com.curso.worldwonders.infrastructure.ProviderTest;
 import com.curso.worldwonders.manager.UserManager;
 
 /**
@@ -56,6 +57,9 @@ public class LoginActivity extends AppCompatActivity {
 
     protected void loginUser(User user) {
         UserManager userManager = new UserManager(LoginActivity.this);
+
+        ProviderTest test = new ProviderTest(this);
+        test.insertTestWonder("Cristo Redentor", "Brazil", "Rio de Janeiro", "");
 
         if (userManager.login(user)) {
             Toast.makeText(LoginActivity.this, "Logado com sucesso!", Toast.LENGTH_LONG).show();

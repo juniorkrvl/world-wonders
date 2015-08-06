@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.curso.worldwonders.R;
+import com.curso.worldwonders.infrastructure.ProviderTest;
 import com.curso.worldwonders.manager.UserManager;
 
 public class MainActivity extends ActionBarActivity {
@@ -38,6 +39,11 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         else if(id ==  R.id.action_logout){
+
+            ProviderTest pt = new ProviderTest(this);
+            pt.deleteTestWonder(4);
+            pt.printWonderList();
+
             UserManager userManager = new UserManager(this);
             userManager.logout();
             Intent intent = new Intent(this,LoginActivity.class);

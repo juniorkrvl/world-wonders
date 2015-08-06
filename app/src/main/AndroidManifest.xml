@@ -24,6 +24,9 @@
             android:label="@string/title_activity_main" >
 
         </activity>
+        <provider
+            android:name="com.curso.worldwonders.database.provider.WorldWondersContentProvider"
+            android:authorities="com.curso.worldwonders" />
     </application>
 
 </manifest>
