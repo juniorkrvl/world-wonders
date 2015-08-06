@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="login_horizontal_image">460dp</dimen>
+    <dimen name="login_vertical_image">370dp</dimen>
+</resources>

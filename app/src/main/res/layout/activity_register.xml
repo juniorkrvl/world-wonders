@@ -1,0 +1,129 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.curso.worldwonders.ui.RegisterActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="@string/name" />
+
+        <EditText
+            android:id="@+id/register_txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/email" />
+
+        <EditText
+            android:id="@+id/register_txt_email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/password" />
+
+        <EditText
+            android:id="@+id/register_txt_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="numberPassword" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/password_confirmation" />
+
+        <EditText
+            android:id="@+id/register_txt_password_confirmation"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="numberPassword" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/country" />
+
+        <Spinner
+            android:id="@+id/register_spn_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/languages" />
+
+        <AutoCompleteTextView
+            android:id="@+id/register_auto_txt_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/gender" />
+
+        <RadioGroup
+            android:id="@+id/register_rd_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/register_rd_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_button_male"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/register_rd_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_button_female" />
+
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/register_ck_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/receive_notifications" />
+
+        <Button
+            android:id="@+id/register_btn_send"
+            android:layout_marginTop="20dp"
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:text="@string/send"></Button>
+
+
+    </LinearLayout>
+
+</ScrollView>

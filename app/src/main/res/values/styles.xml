@@ -1,0 +1,30 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="WWTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="main_content">
+        <item name="android:background">@color/list_background</item>
+    </style>
+
+    <style name="main_item_content">
+        <item name="android:background">@color/item_background</item>
+    </style>
+
+    <style name="main_item_name">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="main_item_country">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="main_item_description">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+</resources>
