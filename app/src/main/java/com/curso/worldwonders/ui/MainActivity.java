@@ -10,6 +10,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.ListView;
 
 import com.curso.worldwonders.R;
@@ -32,6 +38,25 @@ public class MainActivity extends ActionBarActivity {
 
     private void initialize() {
         listView = (ListView) this.findViewById(R.id.main_list);
+
+        AnimationSet set = new AnimationSet(true);
+
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(500);
+        set.addAnimation(animation);
+
+        animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f
+        );
+        animation.setDuration(500);
+        set.addAnimation(animation);
+
+        set.setInterpolator(new OvershootInterpolator(0.5f));
+
+        LayoutAnimationController controller = new LayoutAnimationController(set, 0.3f);
+        listView.setLayoutAnimation(controller);
+
         feed = new FeedCursorAdapter(this, null);
         listView.setAdapter(feed);
 
