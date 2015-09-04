@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.curso.worldwonders" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_btfit"
@@ -12,6 +14,7 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -22,12 +25,16 @@
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/title_activity_main" >
-
         </activity>
+
         <provider
-            android:name="com.curso.worldwonders.database.provider.WorldWondersContentProvider"
+            android:name=".database.provider.WorldWondersContentProvider"
             android:authorities="com.curso.worldwonders" />
+
+        <activity
+            android:name=".ui.WonderDetailsActivity"
+            android:label="@string/title_activity_wonder_details" >
+        </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

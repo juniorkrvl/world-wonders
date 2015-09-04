@@ -1,15 +1,17 @@
 package com.curso.worldwonders.ui;
-
+import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -20,68 +22,40 @@ import android.widget.ListView;
 
 import com.curso.worldwonders.R;
 import com.curso.worldwonders.adapter.FeedCursorAdapter;
+import com.curso.worldwonders.entity.Wonder;
+import com.curso.worldwonders.infrastructure.Constants;
 import com.curso.worldwonders.infrastructure.ProviderTest;
 import com.curso.worldwonders.manager.UserManager;
 import com.curso.worldwonders.manager.WonderManager;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements WondersListFragment.OnWonderSelectedListener {
 
     private ListView listView;
     private FeedCursorAdapter feed;
+    private boolean isTablet;
+    private View detailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initialize();
+        isTablet = getResources().getBoolean(R.bool.is_tablet);
+        loadUi();
     }
 
-    private void initialize() {
-        listView = (ListView) this.findViewById(R.id.main_list);
+    private void loadUi(){
+        //detailFragment = this.findViewById(R.id.wonder_details_container);
 
-        AnimationSet set = new AnimationSet(true);
+        if (isTablet) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            WonderDetailsFragment details = new WonderDetailsFragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.wonder_details_container, details);
+            ft.commit();
+        }
 
-        Animation animation = new AlphaAnimation(0.0f, 1.0f);
-        animation.setDuration(500);
-        set.addAnimation(animation);
-
-        animation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f
-        );
-        animation.setDuration(500);
-        set.addAnimation(animation);
-
-        set.setInterpolator(new OvershootInterpolator(0.5f));
-
-        LayoutAnimationController controller = new LayoutAnimationController(set, 0.3f);
-        listView.setLayoutAnimation(controller);
-
-        feed = new FeedCursorAdapter(this, null);
-        listView.setAdapter(feed);
-
-        final WonderManager manager = new WonderManager(this);
-
-        getLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
-
-            @Override
-            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                return manager.getWondersLoader();
-            }
-
-            @Override
-            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-// Swap the new cursor in. (The framework will take care of closing the
-// old cursor once we return.)
-                feed.changeCursor(data);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<Cursor> loader) {
-                feed.changeCursor(null);
-            }
-        });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,5 +93,21 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onWonderSelected(Wonder wonder) {
+        if (isTablet) {
+            WonderDetailsFragment details = WonderDetailsFragment.newInstance(wonder);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.wonder_details_container, details);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        }
+        else{
+            Intent intent = new Intent(this, WonderDetailsActivity.class);
+            intent.putExtra(Constants.IntentConsts.EXTRA_WONDER, wonder);
+            startActivity(intent);
+        }
     }
 }

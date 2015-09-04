@@ -49,5 +49,7 @@
         <item>French</item>
     </string-array>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_wonder_details">WonderDetailsActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

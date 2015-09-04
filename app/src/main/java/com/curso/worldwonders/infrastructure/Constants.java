@@ -10,6 +10,8 @@ public class Constants {
         public static final String EXTRA_PASSWORD = "password";
         public static final String EXTRA_NAME = "name";
         public static final String EXTRA_USER = "user";
+        public static final String EXTRA_WONDER = "wonder";
+
 
         public static final int REQUEST_CODE_LOGIN = 1;
     }
