@@ -19,7 +19,11 @@ import android.widget.Toast;
 import com.curso.worldwonders.R;
 import com.curso.worldwonders.entity.User;
 import com.curso.worldwonders.infrastructure.Constants;
+import com.curso.worldwonders.infrastructure.OperationListener;
+import com.curso.worldwonders.integrator.OperationResult;
 import com.curso.worldwonders.manager.UserManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -134,10 +138,20 @@ public class RegisterActivity extends ActionBarActivity {
         }
 
         if (!error) {
-            Toast.makeText(this, resources.getString(R.string.message_success), Toast.LENGTH_LONG).show();
 
             UserManager userManager = new UserManager(this);
-            userManager.register(user);
+            //userManager.register(user);
+            userManager.register(user, new OperationListener<OperationResult<JSONObject>>() {
+                @Override
+                public void onSuccess(OperationResult<JSONObject> result) {
+                    Toast.makeText(RegisterActivity.this,"User registered!",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(int error) {
+                    Toast.makeText(RegisterActivity.this,"Error",Toast.LENGTH_SHORT).show();
+                }
+            });
 
             Intent intent = new Intent();
             intent.putExtra(Constants.IntentConsts.EXTRA_USER, user);

@@ -147,7 +147,7 @@ public class WorldWondersContentProvider extends ContentProvider {
                 case WONDER_DIR:
                 case WONDER_ID:
                     // TASK: utilizar os metodos do SQLitedatabase para inserir a entrada no BD
-                    long id = db.insertOrThrow(WondersTable.TABLE_NAME,null,values);
+                    long id = db.insertWithOnConflict(WondersTable.TABLE_NAME,null,values, SQLiteDatabase.CONFLICT_REPLACE);
 
                    Uri newUri = ContentUris.withAppendedId(uri, id);
 
@@ -316,7 +316,7 @@ public class WorldWondersContentProvider extends ContentProvider {
 
             // insert the batch values
             for (ContentValues contValue : contValues) {
-                dbConnection.insert(table, null, contValue);
+                dbConnection.insertWithOnConflict(table, null, contValue, SQLiteDatabase.CONFLICT_REPLACE);
                 insertCount++;
             }
 

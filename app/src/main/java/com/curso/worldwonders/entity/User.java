@@ -1,5 +1,7 @@
 package com.curso.worldwonders.entity;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -10,4 +12,5 @@ public class User implements Serializable{
     public String email;
     public String password;
     public String language;
+
 }

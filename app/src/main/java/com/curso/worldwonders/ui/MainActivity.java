@@ -72,25 +72,19 @@ public class MainActivity extends ActionBarActivity implements WondersListFragme
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if(id ==  R.id.action_logout){
-
-//            ProviderTest pt = new ProviderTest(this);
-//            pt.deleteTestWonder(4);
-//            pt.printWonderList();
-
+         if(id ==  R.id.action_logout){
+            //ProviderTest pt = new ProviderTest(this);
+            //pt.deleteTestWonder(4);
+            //pt.printWonderList();
             UserManager userManager = new UserManager(this);
             userManager.logout();
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
             finish();
         }
-        else if(id == R.id.action_rate){
-            ProviderTest test = new ProviderTest(this);
-            test.insertTestWonder("Pyramid", "Egypt", "Egypt", "http://www.kingtutone.com/pyramids/information/khafrepyramid.jpg");
-        }
+        else if(id == R.id.action_refresh){
+             return false;
+         }
 
         return super.onOptionsItemSelected(item);
     }

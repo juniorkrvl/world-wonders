@@ -4,23 +4,10 @@
     tools:context="com.curso.worldwonders.ui.MainActivity">
 
     <item
-        android:id="@+id/action_rate"
-        android:title="@string/rate"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_action_rate"
-        app:showAsAction="always" />
-
-    <item android:id="@+id/action_settings"
-        android:title="@string/settings"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_logout"
         android:title="@string/logout"
         android:orderInCategory="100"
         android:icon="@drawable/ic_action_rate"
         app:showAsAction="never" />
-
 
 </menu>

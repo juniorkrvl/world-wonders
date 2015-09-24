@@ -3,11 +3,17 @@ package com.curso.worldwonders.ui;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -18,11 +24,18 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.curso.worldwonders.R;
 import com.curso.worldwonders.adapter.FeedCursorAdapter;
 import com.curso.worldwonders.entity.Wonder;
+import com.curso.worldwonders.infrastructure.Constants;
+import com.curso.worldwonders.infrastructure.OperationListener;
+import com.curso.worldwonders.manager.UserManager;
 import com.curso.worldwonders.manager.WonderManager;
+import com.curso.worldwonders.sync.SyncService;
+
+import java.util.List;
 
 /**
  * Created by Junior on 03/09/2015.
@@ -39,6 +52,12 @@ public class WondersListFragment extends Fragment {
     private ListView listView;
     private FeedCursorAdapter feed;
     private Activity hostActivity;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -64,10 +83,56 @@ public class WondersListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-              Cursor cursor = (Cursor) listView.getAdapter().getItem(position);
-              mListener.onWonderSelected(new Wonder(cursor));
+                Cursor cursor = (Cursor) listView.getAdapter().getItem(position);
+                mListener.onWonderSelected(new Wonder(cursor));
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_wonders_list_fragment,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if(id ==  R.id.action_logout){
+           return false;
+        }
+        else if(id == R.id.action_refresh){
+            item.setActionView(R.layout.menu_loader);
+
+            final Intent intent = new Intent(hostActivity, SyncService.class);
+            Bundle bundleExtras = new Bundle();
+            bundleExtras.putString("Command","Wonders");
+            bundleExtras.putParcelable("Receiver", new ResultReceiver(new Handler()) {
+                @Override
+                protected void onReceiveResult(int resultCode, Bundle resultData) {
+                    if (Constants.Service.SUCCESS == resultCode) {
+                        item.setActionView(null);
+                        Bundle b = resultData;
+                        Toast.makeText(hostActivity, b.getString("Message"), Toast.LENGTH_SHORT).show();
+                        hostActivity.stopService(intent);
+                    } else if (Constants.Service.SUCCESS == resultCode) {
+                        Bundle b = resultData;
+                        Toast.makeText(hostActivity, b.getString("Message"), Toast.LENGTH_SHORT).show();
+                        hostActivity.stopService(intent);
+                    }
+                }
+            });
+            intent.putExtras(bundleExtras);
+            hostActivity.startService(intent);
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadWonders()

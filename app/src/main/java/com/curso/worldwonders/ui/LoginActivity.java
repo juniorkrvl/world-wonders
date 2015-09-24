@@ -16,8 +16,12 @@ import android.widget.Toast;
 import com.curso.worldwonders.R;
 import com.curso.worldwonders.entity.User;
 import com.curso.worldwonders.infrastructure.Constants;
+import com.curso.worldwonders.infrastructure.OperationListener;
 import com.curso.worldwonders.infrastructure.ProviderTest;
+import com.curso.worldwonders.integrator.OperationResult;
 import com.curso.worldwonders.manager.UserManager;
+
+import org.json.JSONObject;
 
 /**
  * Created by Junior on 02/07/2015.
@@ -61,14 +65,27 @@ public class LoginActivity extends AppCompatActivity {
 //        ProviderTest test = new ProviderTest(this);
 //        test.insertTestWonder("Cristo Redentor", "Brazil", "Rio de Janeiro", "");
 
-        if (userManager.login(user)) {
-            Toast.makeText(LoginActivity.this, "Logado com sucesso!", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(LoginActivity.this, "Login ou senha inválidos!", Toast.LENGTH_LONG).show();
-        }
+
+        userManager.login(user, new OperationListener<OperationResult<JSONObject>>() {
+            @Override
+            public void onSuccess(OperationResult<JSONObject> result) {
+                Toast.makeText(LoginActivity.this, "Logado com sucesso!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onError(int error) {
+                Toast.makeText(LoginActivity.this, "Login ou senha inválidos!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+//        if (userManager.login(user)) {
+//
+//        } else {
+//
+//        }
 
     }
 
