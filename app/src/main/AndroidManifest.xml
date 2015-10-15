@@ -36,6 +36,9 @@
             android:label="@string/title_activity_wonder_details" >
         </activity>
         <service android:name=".sync.SyncService" android:exported="false"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="bfc2108cf6fa1f236965c2a2fa6cdbf3d0998d0a" />
     </application>
 
 </manifest>

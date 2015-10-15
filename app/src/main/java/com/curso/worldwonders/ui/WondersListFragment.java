@@ -1,8 +1,10 @@
 package com.curso.worldwonders.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -106,29 +108,47 @@ public class WondersListFragment extends Fragment {
            return false;
         }
         else if(id == R.id.action_refresh){
-            item.setActionView(R.layout.menu_loader);
 
-            final Intent intent = new Intent(hostActivity, SyncService.class);
-            Bundle bundleExtras = new Bundle();
-            bundleExtras.putString("Command","Wonders");
-            bundleExtras.putParcelable("Receiver", new ResultReceiver(new Handler()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(hostActivity);
+            builder.setIconAttribute(android.R.attr.alertDialogIcon);
+            builder.setTitle(R.string.message_sync_title);
+            builder.setMessage(R.string.message_sync_message);
+            builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
                 @Override
-                protected void onReceiveResult(int resultCode, Bundle resultData) {
-                    if (Constants.Service.SUCCESS == resultCode) {
-                        item.setActionView(null);
-                        Bundle b = resultData;
-                        Toast.makeText(hostActivity, b.getString("Message"), Toast.LENGTH_SHORT).show();
-                        hostActivity.stopService(intent);
-                    } else if (Constants.Service.SUCCESS == resultCode) {
-                        Bundle b = resultData;
-                        Toast.makeText(hostActivity, b.getString("Message"), Toast.LENGTH_SHORT).show();
-                        hostActivity.stopService(intent);
-                    }
+                public void onClick(DialogInterface dialog, int which) {
+                    item.setActionView(R.layout.menu_loader);
+
+                    final Intent intent = new Intent(hostActivity, SyncService.class);
+                    Bundle bundleExtras = new Bundle();
+                    bundleExtras.putString("Command", "Wonders");
+                    bundleExtras.putParcelable("Receiver", new ResultReceiver(new Handler()) {
+                        @Override
+                        protected void onReceiveResult(int resultCode, Bundle resultData) {
+                            if (Constants.Service.SUCCESS == resultCode) {
+                                item.setActionView(null);
+                                Bundle b = resultData;
+                                Toast.makeText(hostActivity, b.getString("Message"), Toast.LENGTH_SHORT).show();
+                                hostActivity.stopService(intent);
+                            } else if (Constants.Service.SUCCESS == resultCode) {
+                                Bundle b = resultData;
+                                Toast.makeText(hostActivity, b.getString("Message"), Toast.LENGTH_SHORT).show();
+                                hostActivity.stopService(intent);
+                            }
+                        }
+                    });
+                    intent.putExtras(bundleExtras);
+                    hostActivity.startService(intent);
                 }
             });
-            intent.putExtras(bundleExtras);
-            hostActivity.startService(intent);
 
+            builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
 
         }
 

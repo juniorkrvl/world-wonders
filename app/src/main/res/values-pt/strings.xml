@@ -31,6 +31,12 @@
     <string name="radio_button_male">Masculino</string>
     <string name="radio_button_female">Feminino</string>
 
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancelar</string>
+
+    <string name="message_sync_title">Sincronização</string>
+    <string name="message_sync_message">Deseja sincronizar as maravilhas?</string>
+
     <string-array name="spinner_items">
         <item>Brasil</item>
         <item>Canadá</item>

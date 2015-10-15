@@ -31,6 +31,18 @@
     <string name="radio_button_male">Male</string>
     <string name="radio_button_female">Female</string>
 
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+
+    <string name="message_sync_title">Sync</string>
+    <string name="message_sync_message">Proceed with wonders sync?</string>
+
+    <string name="not_wonders_sync_ticker">Wonders loaded: </string>
+    <string name="not_wonders_sync_title">Wonders loaded successfully!</string>
+    <string name="not_wonders_sync_text">Wonders loaded</string>
+
+
+
     <string-array name="spinner_items">
         <item>Brazil</item>
         <item>Canada</item>

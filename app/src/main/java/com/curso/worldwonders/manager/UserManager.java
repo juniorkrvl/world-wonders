@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.provider.Settings;
+import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.curso.worldwonders.entity.User;
 import com.curso.worldwonders.infrastructure.Constants;
 import com.curso.worldwonders.infrastructure.OperationListener;
@@ -54,6 +56,7 @@ public class UserManager {
                     e.printStackTrace();
                 }
 
+                descriptor.bodyParameters = userJson;
                 BackendIntegrator integrator = new BackendIntegrator();
                 OperationResult<JSONObject> result = integrator.executeOperation(descriptor);
                 String token = result.result.optString("name");
@@ -95,28 +98,37 @@ public class UserManager {
 
             @Override
             protected OperationResult<JSONObject> doInBackground(Void... params) {
-                BackendOperationDescriptor descriptor = new BackendOperationDescriptor();
-                descriptor.requestMethod = "GET";
-                //String parameters = "username=" + user.email + "&password=" + user.password;
 
-                List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-                parameters.add(new BasicNameValuePair("username",user.email));
-                parameters.add(new BasicNameValuePair("password",user.password));
+                try {
+                    BackendOperationDescriptor descriptor = new BackendOperationDescriptor();
+                    descriptor.requestMethod = "GET";
+                    //String parameters = "username=" + user.email + "&password=" + user.password;
 
-                String formatedParameters = URLEncodedUtils.format(parameters,"UTF-8");
+                    List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+                    parameters.add(new BasicNameValuePair("username",user.email));
+                    parameters.add(new BasicNameValuePair("password",user.password));
 
-                descriptor.endpoint = WorldWondersApi.Host + WorldWondersApi.Login + formatedParameters;
+                    String formatedParameters = URLEncodedUtils.format(parameters,"UTF-8");
 
-                BackendIntegrator integrator = new BackendIntegrator();
-                OperationResult<JSONObject> result = integrator.executeOperation(descriptor);
-                String token = result.result.optString("name");
+                    descriptor.endpoint = WorldWondersApi.Host + WorldWondersApi.Login + formatedParameters;
 
-                mSharedPreferences = mContext.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                editor.putString(Constants.SharedPrefsConsts.KEY_TOKEN, token);
-                editor.apply();
+                    BackendIntegrator integrator = new BackendIntegrator();
+                    OperationResult<JSONObject> result = integrator.executeOperation(descriptor);
+                    String token = result.result.optString("name");
 
-                return result;
+                    mSharedPreferences = mContext.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putString(Constants.SharedPrefsConsts.KEY_TOKEN, token);
+                    editor.apply();
+
+                    return result;
+
+                } catch (Exception e) {
+                    Crashlytics.log(Log.ERROR,"WorldWonders","Crash ao fazer login");
+                }
+
+                return null;
+
             }
 
             @Override

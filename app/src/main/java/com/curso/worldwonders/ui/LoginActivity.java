@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.curso.worldwonders.R;
 import com.curso.worldwonders.entity.User;
 import com.curso.worldwonders.infrastructure.Constants;
@@ -21,6 +22,7 @@ import com.curso.worldwonders.infrastructure.ProviderTest;
 import com.curso.worldwonders.integrator.OperationResult;
 import com.curso.worldwonders.manager.UserManager;
 
+import io.fabric.sdk.android.Fabric;
 import org.json.JSONObject;
 
 /**
@@ -36,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
         initialize();
         loadUi();
